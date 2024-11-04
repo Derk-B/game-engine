@@ -41,6 +41,7 @@ Shader::Shader(const char* vertexFile, const char* fragmentFile)
 	glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
 	// Compile the Vertex Shader into machine code
 	glCompileShader(fragmentShader);
+	std::cout << vertexFile << std::endl;
 	compileErrors(fragmentShader, "FRAGMENT");
 
 	// Create Shader Program Object and get its reference
@@ -85,6 +86,7 @@ void Shader::compileErrors(unsigned int shader, const char* type) {
 		glGetProgramiv(shader, GL_COMPILE_STATUS, &hasCompiled);
 		if (hasCompiled == GL_FALSE) {
 			glGetShaderInfoLog(shader, LOG_SIZE, NULL, infoLog);
+			std::cout << infoLog << type << shader << std::endl;
 			std::cout << "SHADER_COMPILATION_ERROR for:" << type << "\n" << std::endl;
 		}
 	}

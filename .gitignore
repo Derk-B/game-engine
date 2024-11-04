@@ -39,3 +39,5 @@
 
 # Include obj mesh files which are not compiled object files
 !**/mesh/*.obj
+**/build/
+**/.vscode/

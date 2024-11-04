@@ -17,6 +17,7 @@ namespace fs = std::filesystem;
 #include "engine/VBO.h"
 #include "engine/EBO.h"
 #include "engine/Camera.h"
+#include "engine/MeshLoader/OBJParser.h"
 
 const unsigned int width = 800;
 const unsigned int height = 800;
@@ -70,6 +71,13 @@ GLuint lightIndices[] =
 
 int main()
 {
+	// Load meshes
+	// Parser* parser = new OBJParser();
+
+	// GLfloat* vertices_ptr;
+	// std::cout << parser->parse("test_file", vertices_ptr) << std::endl;
+	// std::cout << *vertices_ptr << std::endl;
+	
 	// Initialize GLFW
 	glfwInit();
 
@@ -82,7 +90,7 @@ int main()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	// Create a GLFWwindow object of 800 by 800 pixels, naming it "YoutubeOpenGL"
-	GLFWwindow* window = glfwCreateWindow(width, height, "YoutubeOpenGL", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(width, height, "Guardian of the grove", NULL, NULL);
 	// Error check if the window fails to create
 	if (window == NULL)
 	{
