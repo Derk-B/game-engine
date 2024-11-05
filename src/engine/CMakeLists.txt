@@ -9,6 +9,8 @@ set(ENGINE_FILES
     VBO.cpp
     EBO.cpp)
 
-message(STATUS "cmake root =${CMAKE_SOURCE_DIR}")
+add_subdirectory(MeshLoader)
 
-add_library(Engine ${ENGINE_FILES})
+add_library(engine ${ENGINE_FILES})
+
+target_include_directories(engine PUBLIC ${CMAKE_SOURCE_DIR}/lib/stb)

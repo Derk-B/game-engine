@@ -71,12 +71,14 @@ GLuint lightIndices[] =
 
 int main()
 {
-	// Load meshes
 	// Parser* parser = new OBJParser();
+	Parser* parser = new OBJParser();
 
-	// GLfloat* vertices_ptr;
-	// std::cout << parser->parse("test_file", vertices_ptr) << std::endl;
-	// std::cout << *vertices_ptr << std::endl;
+	GLfloat* vertices_ptr;
+	std::cout << parser->parse("test_file", vertices_ptr) << std::endl;
+	std::cout << *vertices_ptr << std::endl;
+
+	delete[] vertices_ptr;
 	
 	// Initialize GLFW
 	glfwInit();

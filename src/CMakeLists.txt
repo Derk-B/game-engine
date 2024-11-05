@@ -20,21 +20,14 @@ engine/texture.h
 lib/glad.c
 lib/stb/stb_image.h
 ${SOURCES}
-# engine/Camera.cpp
-# engine/shaderClass.cpp
-# engine/stb.cpp
-# engine/texture.cpp
-# engine/VAO.cpp
-# engine/VBO.cpp
-# engine/EBO.cpp
 )
 
-add_subdirectory(Engine)
+add_subdirectory(engine)
 add_definitions(-DGLM_ENABLE_EXPERIMENTAL)
 
 target_include_directories(Guardian_of_the_grove PRIVATE "lib/stb")
 target_link_libraries(Guardian_of_the_grove 
     glfw
     glad
-    Engine
+    engine
 )

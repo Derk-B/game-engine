@@ -5,8 +5,7 @@
 
 class OBJParser : public Parser {
     public:
-        ~OBJParser() {};
-        int parse(const char* file_name, GLfloat* vertices) override;
+        int parse(const char* file_name, GLfloat*& vertices);
 };
 
 #endif

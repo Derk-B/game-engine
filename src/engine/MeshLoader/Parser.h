@@ -5,8 +5,7 @@
 
 class Parser {
     public:
-        virtual ~Parser() = default;
-        virtual int parse(const char* file_name, GLfloat* vertices) = 0;
+        int parse(const char* file_name, GLfloat*& vertices);
 };
 
 #endif
