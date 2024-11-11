@@ -3,27 +3,7 @@
 namespace fs = std::filesystem;
 //------------------------------
 
-#include <iostream>
-#include <vector>
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <stb_image.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
-#include "engine/texture.h"
-#include "engine/shaderClass.h"
-#include "engine/VAO.h"
-#include "engine/VBO.h"
-#include "engine/EBO.h"
-#include "engine/Camera.h"
-<<<<<<< Updated upstream
-=======
-#include "engine/MeshLoader/Parser.h"
-#include "engine/MeshLoader/OBJParser.h"
->>>>>>> Stashed changes
-
+#include "engine/Mesh.h"
 
 const unsigned int width = 800;
 const unsigned int height = 800;
@@ -31,12 +11,12 @@ const unsigned int height = 800;
 
 
 // Vertices coordinates
-GLfloat vertices[] =
-{ //     COORDINATES     /        COLORS        /    TexCoord    /       NORMALS     //
-	-1.0f, 0.0f,  1.0f,		0.0f, 0.0f, 0.0f,		0.0f, 0.0f,		0.0f, 1.0f, 0.0f,
-	-1.0f, 0.0f, -1.0f,		0.0f, 0.0f, 0.0f,		0.0f, 1.0f,		0.0f, 1.0f, 0.0f,
-	 1.0f, 0.0f, -1.0f,		0.0f, 0.0f, 0.0f,		1.0f, 1.0f,		0.0f, 1.0f, 0.0f,
-	 1.0f, 0.0f,  1.0f,		0.0f, 0.0f, 0.0f,		1.0f, 0.0f,		0.0f, 1.0f, 0.0f
+Vertex vertices[] =
+{ //               COORDINATES           /            COLORS          /           NORMALS         /       TEXTURE COORDINATES    //
+	Vertex{glm::vec3(-1.0f, 0.0f,  1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
+	Vertex{glm::vec3(-1.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
+	Vertex{glm::vec3( 1.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)},
+	Vertex{glm::vec3( 1.0f, 0.0f,  1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)}
 };
 
 // Indices for vertices order
@@ -46,16 +26,32 @@ GLuint indices[] =
 	0, 2, 3
 };
 
-GLfloat lightVertices[] =
+GLuint objIndices[] =
+{
+	5, 1, 4,
+	5, 4, 8,
+	3, 7, 8,
+	3, 8, 4,
+	2, 6, 3,
+	6, 7, 3,
+	1, 5, 2,
+	5, 6, 2,
+	5, 8, 6,
+	8, 7, 6,
+	1, 2, 3,
+	1, 3, 4
+};
+
+Vertex lightVertices[] =
 { //     COORDINATES     //
-	-0.1f, -0.1f,  0.1f,
-	-0.1f, -0.1f, -0.1f,
-	 0.1f, -0.1f, -0.1f,
-	 0.1f, -0.1f,  0.1f,
-	-0.1f,  0.1f,  0.1f,
-	-0.1f,  0.1f, -0.1f,
-	 0.1f,  0.1f, -0.1f,
-	 0.1f,  0.1f,  0.1f
+	Vertex{glm::vec3(-0.1f, -0.1f,  0.1f)},
+	Vertex{glm::vec3(-0.1f, -0.1f, -0.1f)},
+	Vertex{glm::vec3(0.1f, -0.1f, -0.1f)},
+	Vertex{glm::vec3(0.1f, -0.1f,  0.1f)},
+	Vertex{glm::vec3(-0.1f,  0.1f,  0.1f)},
+	Vertex{glm::vec3(-0.1f,  0.1f, -0.1f)},
+	Vertex{glm::vec3(0.1f,  0.1f, -0.1f)},
+	Vertex{glm::vec3(0.1f,  0.1f,  0.1f)}
 };
 
 GLuint lightIndices[] =
@@ -77,22 +73,19 @@ GLuint lightIndices[] =
 
 int main()
 {
-<<<<<<< Updated upstream
-=======
 	// Parser* parser = new OBJParser();
-	OBJParser* parser = new OBJParser();
+	// OBJParser* parser = new OBJParser();
 
-	std::vector<GLfloat> vert_vec;
-	parser->parse("../assets/mesh/test.obj", vert_vec);
-	std::cout << "Vertices: " << "\n";
-	for (auto v : vert_vec) {
-		std::cout << v << ' ';
-	}
-	std::cout << "\n";
+	// std::vector<GLfloat> vert_vec;
+	// parser->parse("../assets/mesh/test.obj", vert_vec);
+	// std::cout << "Vertices: " << "\n";
+	// for (auto v : vert_vec) {
+	// 	std::cout << v << ' ';
+	// }
+	// std::cout << "\n";
 
-	vert_vec.clear();
+	// vert_vec.clear();
 	
->>>>>>> Stashed changes
 	// Initialize GLFW
 	glfwInit();
 
@@ -122,45 +115,55 @@ int main()
 	// In this case the viewport goes from x = 0, y = 0, to x = 800, y = 800
 	glViewport(0, 0, width, height);
 
-
+	/*
+	* I'm doing this relative path thing in order to centralize all the resources into one folder and not
+	* duplicate them between tutorial folders. You can just copy paste the resources from the 'Resources'
+	* folder and then give a relative path from this folder to whatever resource you want to get to.
+	* Also note that this requires C++17, so go to Project Properties, C/C++, Language, and select C++17
+	*/
+	std::string parentDir = (fs::current_path().fs::path::parent_path()).string();
+	std::string texPath = "/assets/";
+	Texture textures[] {
+		Texture((parentDir + texPath + "pop_cat.png").c_str(), "diffuse", GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE)
+	};
 
 	// Generates Shader object using shaders default.vert and default.frag
 	Shader shaderProgram("shaders/default.vert", "shaders/default.frag");
-	// Generates Vertex Array Object and binds it
-	VAO VAO1;
-	VAO1.Bind();
-	// Generates Vertex Buffer Object and links it to vertices
-	VBO VBO1(vertices, sizeof(vertices));
-	// Generates Element Buffer Object and links it to indices
-	EBO EBO1(indices, sizeof(indices));
-	// Links VBO attributes such as coordinates and colors to VAO
-	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 11 * sizeof(float), (void*)0);
-	VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 11 * sizeof(float), (void*)(3 * sizeof(float)));
-	VAO1.LinkAttrib(VBO1, 2, 2, GL_FLOAT, 11 * sizeof(float), (void*)(6 * sizeof(float)));
-	VAO1.LinkAttrib(VBO1, 3, 3, GL_FLOAT, 11 * sizeof(float), (void*)(8 * sizeof(float)));
-	// Unbind all to prevent accidentally modifying them
-	VAO1.Unbind();
-	VBO1.Unbind();
-	EBO1.Unbind();
-
+	// Store mesh data in vectors for the mesh
+	std::vector <Vertex> verts(vertices, vertices + sizeof(vertices) / sizeof(Vertex));
+	std::vector <GLuint> ind(indices, indices + sizeof(indices) / sizeof(GLuint));
+	std::vector <Texture> tex(textures, textures + sizeof(textures) / sizeof(Texture));
+	// Create floor mesh
+	Mesh floor(verts, ind, tex);
 
 	// Shader for light cube
 	Shader lightShader("shaders/light.vert", "shaders/light.frag");
-	// Generates Vertex Array Object and binds it
-	VAO lightVAO;
-	lightVAO.Bind();
-	// Generates Vertex Buffer Object and links it to vertices
-	VBO lightVBO(lightVertices, sizeof(lightVertices));
-	// Generates Element Buffer Object and links it to indices
-	EBO lightEBO(lightIndices, sizeof(lightIndices));
-	// Links VBO attributes such as coordinates and colors to VAO
-	lightVAO.LinkAttrib(lightVBO, 0, 3, GL_FLOAT, 3 * sizeof(float), (void*)0);
-	// Unbind all to prevent accidentally modifying them
-	lightVAO.Unbind();
-	lightVBO.Unbind();
-	lightEBO.Unbind();
+	// Store mesh data in vectors for the mesh
+	std::vector <Vertex> lightVerts(lightVertices, lightVertices + sizeof(lightVertices) / sizeof(Vertex));
+	std::vector <GLuint> lightInd(lightIndices, lightIndices + sizeof(lightIndices) / sizeof(GLuint));
+	// Create light mesh
+	Mesh light(lightVerts, lightInd, tex);
 
 
+	// Read our .obj file
+	std::vector< glm::vec3 > vertices;
+	std::vector< glm::vec2 > uvs;
+	std::vector< glm::vec3 > normals; // Won't be used at the moment.
+	Model model;
+	int res = model.getData("../assets/easy.obj", vertices, uvs, normals);
+	printf("%d", vertices.size());
+	printf("%d", uvs.size());
+	printf("%d", normals.size());
+
+	std::vector <Vertex> objVerts;
+	for (int i = 0; i < vertices.size(); i++) {
+		objVerts.push_back(Vertex{vertices[i], normals[i], glm::vec3(0.0f, 1.0f, 0.0f),uvs[i]});
+	}
+	std::vector <GLuint> objInd(objIndices, objIndices + sizeof(objIndices) / sizeof(GLuint));
+	// Create obj mesh
+	Mesh obj(objVerts, objInd, tex);
+	// const char* path = (parentDir + "/assets/" + "easy.obj").c_str();
+	// Mesh obj(path);
 
 	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	glm::vec3 lightPos = glm::vec3(0.5f, 0.5f, 0.5f);
@@ -179,27 +182,6 @@ int main()
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(pyramidModel));
 	glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 	glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
-
-
-
-	/*
-	* I'm doing this relative path thing in order to centralize all the resources into one folder and not
-	* duplicate them between tutorial folders. You can just copy paste the resources from the 'Resources'
-	* folder and then give a relative path from this folder to whatever resource you want to get to.
-	* Also note that this requires C++17, so go to Project Properties, C/C++, Language, and select C++17
-	*/
-	std::string parentDir = (fs::current_path().fs::path::parent_path()).string();
-	std::string texPath = "/assets/";
-
-	// Texture
-	Texture brickTex((parentDir + texPath + "pop_cat.png").c_str(), GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
-	brickTex.texUnit(shaderProgram, "tex0", 0);
-
-	// Original code from the tutorial
-	/*Texture brickTex("brick.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
-	brickTex.texUnit(shaderProgram, "tex0", 0);*/
-
-
 
 	// Enables the Depth Buffer
 	glEnable(GL_DEPTH_TEST);
@@ -220,31 +202,9 @@ int main()
 		// Updates and exports the camera matrix to the Vertex Shader
 		camera.updateMatrix(45.0f, 0.1f, 100.0f);
 
-
-		// Tells OpenGL which Shader Program we want to use
-		shaderProgram.Activate();
-		// Exports the camera Position to the Fragment Shader for specular lighting
-		glUniform3f(glGetUniformLocation(shaderProgram.ID, "camPos"), camera.Position.x, camera.Position.y, camera.Position.z);
-		// Export the camMatrix to the Vertex Shader of the pyramid
-		camera.Matrix(shaderProgram, "camMatrix");
-		// Binds texture so that is appears in rendering
-		brickTex.Bind();
-		// Bind the VAO so OpenGL knows to use it
-		VAO1.Bind();
-		// Draw primitives, number of indices, datatype of indices, index of indices
-		glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(int), GL_UNSIGNED_INT, 0);
-
-
-
-		// Tells OpenGL which Shader Program we want to use
-		lightShader.Activate();
-		// Export the camMatrix to the Vertex Shader of the light cube
-		camera.Matrix(lightShader, "camMatrix");
-		// Bind the VAO so OpenGL knows to use it
-		lightVAO.Bind();
-		// Draw primitives, number of indices, datatype of indices, index of indices
-		glDrawElements(GL_TRIANGLES, sizeof(lightIndices) / sizeof(int), GL_UNSIGNED_INT, 0);
-
+		floor.Draw(shaderProgram, camera);
+		light.Draw(lightShader, camera);
+		obj.Draw(lightShader, camera);
 
 		// Swap the back buffer with the front buffer
 		glfwSwapBuffers(window);
@@ -255,14 +215,7 @@ int main()
 
 
 	// Delete all the objects we've created
-	VAO1.Delete();
-	VBO1.Delete();
-	EBO1.Delete();
-	brickTex.Delete();
 	shaderProgram.Delete();
-	lightVAO.Delete();
-	lightVBO.Delete();
-	lightEBO.Delete();
 	lightShader.Delete();
 	// Delete window before ending the program
 	glfwDestroyWindow(window);

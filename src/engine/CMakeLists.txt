@@ -1,7 +1,8 @@
 set(ENGINE_FILES 
-    MeshLoader/OBJParser.cpp
-    MeshLoader/Parser.cpp
-    MeshLoader/Mesh.h
+    # MeshLoader/OBJParser.cpp
+    # MeshLoader/Parser.cpp
+    Mesh.cpp
+    Model.cpp
     Camera.cpp
     shaderClass.cpp
     stb.cpp

@@ -61,7 +61,8 @@
         "thread": "cpp",
         "cinttypes": "cpp",
         "typeinfo": "cpp",
-        "ios": "cpp"
+        "ios": "cpp",
+        "codecvt": "cpp"
     },
     "makefile.configureOnOpen": true,
     "C_Cpp.errorSquiggles": "disabled"
