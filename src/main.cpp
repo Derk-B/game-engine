@@ -4,6 +4,7 @@ namespace fs = std::filesystem;
 //------------------------------
 
 #include <iostream>
+#include <vector>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <stb_image.h>
@@ -17,6 +18,12 @@ namespace fs = std::filesystem;
 #include "engine/VBO.h"
 #include "engine/EBO.h"
 #include "engine/Camera.h"
+<<<<<<< Updated upstream
+=======
+#include "engine/MeshLoader/Parser.h"
+#include "engine/MeshLoader/OBJParser.h"
+>>>>>>> Stashed changes
+
 
 const unsigned int width = 800;
 const unsigned int height = 800;
@@ -70,6 +77,22 @@ GLuint lightIndices[] =
 
 int main()
 {
+<<<<<<< Updated upstream
+=======
+	// Parser* parser = new OBJParser();
+	OBJParser* parser = new OBJParser();
+
+	std::vector<GLfloat> vert_vec;
+	parser->parse("../assets/mesh/test.obj", vert_vec);
+	std::cout << "Vertices: " << "\n";
+	for (auto v : vert_vec) {
+		std::cout << v << ' ';
+	}
+	std::cout << "\n";
+
+	vert_vec.clear();
+	
+>>>>>>> Stashed changes
 	// Initialize GLFW
 	glfwInit();
 
